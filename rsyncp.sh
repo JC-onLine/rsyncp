@@ -1,14 +1,16 @@
 #!/bin/bash
-###############################################################################
-# Description:	Sync from 'rog' to 'EeePC' PC with profils files.
-# Input:	- Profile file name with 2 lines:
-#		- Line 1: Major version, ex v1
-#		- Line 2: rsync command-line arguments
+#######################################################################################
+# Description:	Rsyncp is a 'Rsync wrapper': Adding 'p' letter like 'profile'.
+#		This script use a command-line profiles files.
+#
+# Input:	- File profile name with 4 lines:
+#		- Line 1: Major version, ex: v1
+#		- Line 2: rsync command-line arguments, ex: -a --delete --progress
 #		- Line 3: Source sync (folder or file, ssh or not)
 #		- Line 4: Destination sync (folder, ssh or not)
 #
-# Output:	- Rsync trace with sync perf (--progress)
-#		- Delete option is activated
+# Output:	- Display profile details.
+#		- Display Rsync trace with sync perf if --progress in profile file.
 #
 # 2021-01-12:	Created
 # 2021-01-13:	Fix home user conflict - Special Thx to my friend Thierry ;)
@@ -21,10 +23,8 @@
 #
 #
 # Coded by:	JC_onLine
-###############################################################################
+#######################################################################################
 
-echo "Rsyncp is a 'Rsync wrapper': Adding 'p' like 'profile', because this script use a profile command-line files."
-echo ""
 
 # Sync defintion function:
 function go_to_sync() {
@@ -48,14 +48,20 @@ function go_to_sync() {
 
 # Main application
 if [ $# -eq 0 ]; then
+	echo "Rsyncp is a 'Rsync wrapper': Adding 'p' like 'profile', this script use many command-line profiles files."
+	echo ""
 	echo "Please select profil file name in arg."
-	echo "Usage: $0 profilFile1 profilFile2 profileFile3 ..."
+	echo "Usage: profileFile1 profileFile2 profileFile3 ..."
 	echo "Profile file organisation:"
-	echo "	Line1: Source folder or ssh path."
-	echo "	Line2: Destination folder or ssh path."
+	echo "	Line1: Major version." 
+	echo "	Line2: Rsync command-line."
+	echo "	Line3: Source folder or ssh path."
+	echo "	Line4: Destination folder or ssh path."
 	echo "Example:"
-	echo "	user@ipAdress:~/dev/site"
-	echo "	~/dev "
+	echo "v1"	
+	echo "-a --delete --progress"
+	echo "user@ipAddress:~/dev/site"
+	echo "/home/user/dev "
 	echo ""
 else
 	for profile in "$@"; do
