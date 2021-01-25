@@ -2,7 +2,7 @@
 I Add a **p** letter like **profile**, this script use a command-line profile files.
 The idea is to save **rsync** paramters in many **profiles files**.
 
-So describe in many files eatch parameters you want, and execute "rsyncp" with files names in parameters.
+So describe in many files each parameters you want, and execute "rsyncp" with files names in parameters.
 
 Example for one profile:
 
@@ -46,13 +46,14 @@ Output example with multi profiles:
 
 ## Version 1: Profiles files details (2021-01-23)
 ### Profile file organisation:
-	  Line1: Major version.
-	  Line2: Rsync command-line.
-  	Line3: Source folder or ssh path.
-	  Line4: Destination folder or ssh path.
+    Line1: Major version.
+    Line2: Rsync command-line.
+    Line3: Source folder or ssh path.
+    Line4: Destination folder or ssh path.
 ### Organisation example:
 
-    v1"
+    v1
     -a --delete --progress
     user@ipAddress:~/dev/site
     /home/user/dev
+
