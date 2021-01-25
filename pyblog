@@ -1,3 +1,5 @@
-jc@rog:~/dev/site/pyblog
-dev/site
+v1
+-a --delete --progress
+jc@dev-machine:~/dev/site/pyblog
+/home/jc/dev/site
 

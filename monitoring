@@ -1,3 +1,5 @@
-jc@rog:~/dev/site/monitoring
-dev/site
+v1
+-a --delete --progress
+jc@dev-machine:dev/site/monitoring
+/home/jc/dev/site
 
