@@ -2,8 +2,10 @@
 ###############################################################################
 # Description:	Sync from 'rog' to 'EeePC' PC with profils files.
 # Input:	- Profile file name with 2 lines:
-#			- Line 1: Source folder (ssh or not)
-#			- Line 2: Destination folder (ssh or not)
+#		- Line 1: Major version, ex v1
+#		- Line 2: rsync command-line arguments
+#		- Line 3: Source sync (folder or file, ssh or not)
+#		- Line 4: Destination sync (folder, ssh or not)
 #
 # Output:	- Rsync trace with sync perf (--progress)
 #		- Delete option is activated
@@ -11,27 +13,37 @@
 # 2021-01-12:	Created
 # 2021-01-13:	Fix home user conflict - Special Thx to my friend Thierry ;)
 #		Start multi profile arg 
+# 2021-01-23:	Version 1.0 with 4 lines in profile file:
+#		- Line 1: Major version, ex v1
+#		- Line 2: rsync command-line arguments
+#		- Line 3: Source sync (folder or file, ssh or not)
+#		- Line 4: Destination sync (folder, ssh or not)
+#
 #
 # Coded by:	JC_onLine
 ###############################################################################
 
-echo "rog to eeepc:"
+echo "Rsyncp is a 'Rsync wrapper': Adding 'p' like 'profile', because this script use a profile command-line files."
+echo ""
 
-# Sync function defintion:
+# Sync defintion function:
 function go_to_sync() {
-	local internal_profile
 	local app_dir
 	app_dir=$(pwd)
-	internal_profile=$1
-	origin=$(sed -n '1 p' $internal_profile)
-	target=$(sed -n '2 p' $internal_profile)
-	echo "--------"
-	echo "$internal_profile"
-	echo "$origin"
-	echo "$target"
+	version=$(sed -n '1 p' $1)
+	rsync_parameters=$(sed -n '2 p' $1)
+	rsync_source=$(sed -n '3 p' $1)
+	rsync_destination=$(sed -n '4 p' $1)
+	echo "Profile file    :  $1"
+	echo "  Major version :  $version"
+	echo "  Parameters    :  $rsync_parameters"
+	echo "  Source        :  $rsync_source"
+	echo "  Destination   :  $rsync_destination"
 	cd ~
-	rsync -a --delete --progress $origin $target
+	#rsync -a --delete --progress $rsync_source $rsync_destination
+	rsync $rsync_parameters $rsync_source $rsync_destination
 	cd $app_dir
+	echo ""
 }
 
 # Main application
@@ -48,7 +60,8 @@ if [ $# -eq 0 ]; then
 else
 	for profile in "$@"; do
 		if [[ -f $profile ]]; then
-			echo "-> $profile is a file"
+			# uncomment for debug
+			#echo "-> $profile is a file"
 			go_to_sync $profile
 		else
 			echo "/!\ $profile is a NOT file: Skip it!"
