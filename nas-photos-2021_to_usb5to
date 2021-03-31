@@ -1,0 +1,5 @@
+version = 2
+settings = -a --delete --progress
+source = jc@192.168.1.201:'/mnt/HD/HD_a2/01_La-Vie-en-Images/2021 Photos Vidéos'
+destination = /run/media/jc/My Passport/nas-photos/01_La-Vie-en-Images/
+

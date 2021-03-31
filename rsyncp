@@ -1,0 +1,88 @@
+#!/bin/bash
+#######################################################################################
+# Description:	Rsyncp is a 'Rsync wrapper': Adding 'p' letter like 'profile'.
+#		This script use a command-line profiles files.
+#
+# Input:	- File profile name with 4 lines:
+#		- Line 1: Major version, ex: v1
+#		- Line 2: rsync command-line arguments, ex: -a --delete --progress
+#		- Line 3: Source sync (folder or file, ssh or not)
+#		- Line 4: Destination sync (folder, ssh or not)
+#
+# Output:	- Display profile details.
+#		- Display Rsync trace with sync perf if --progress in profile file.
+#
+# 2021-01-12:	Created
+# 2021-01-13:	Fix home user conflict - Special Thx to my friend Thierry ;)
+#		Start multi profile arg 
+# 2021-01-23:	Version 1.0 with 4 lines in profile file:
+#		- Line 1: Major version, ex v1
+#		- Line 2: rsync command-line arguments
+#		- Line 3: Source sync (folder or file, ssh or not)
+#		- Line 4: Destination sync (folder, ssh or not)
+# 2021-03-20:	Version 2 Profile file settings modifications: no matter line number.
+#
+#
+# Coded by:	JC_onLine
+#######################################################################################
+
+# global definition
+app_version="2"
+
+# Sync defintion function:
+function go_to_sync() {
+	profile_version=$(sed -n "s/^version *= *//ip" $1)
+	echo "rsyncp version : $app_version"
+	echo "Profile version: $profile_version"
+	if [ $profile_version = $app_version ]; then
+		local app_dir
+		app_dir=$(pwd)
+		rsync_parameters=$(sed -n "s/settings *= *//ip" $1)
+		rsync_source=$(sed -n "s/source *= *//ip" $1)
+		rsync_destination=$(sed -n "s/destination *= *//ip" $1)
+		echo "Running profile file:  $1"
+		echo "    Parameters  :  $rsync_parameters"
+		echo "    Source      :  $rsync_source"
+		echo "    Destination :  $rsync_destination"
+	  	echo ""	
+		cd ~
+		#settings example:
+		#rsync -a --delete --progress $rsync_source $rsync_destination
+		time rsync $rsync_parameters "$rsync_source" "$rsync_destination"
+		cd $app_dir
+		echo ""
+	else
+		echo "Version conflict: Please check the profile file or rsyncp version."
+		echo "Run rsyncp without profile file to know 'rsynp' version."
+		echo ""
+	fi
+}
+
+# Main application
+if [ $# -eq 0 ]; then
+	echo "rsyncp is a 'Rsync wrapper': Adding 'p' letter like 'profile', this script use many command-line profiles files."
+	echo "rsyncp version: $app_version"
+	echo ""
+	echo "Please select profil file name in arg."
+	echo "Usage: rsyncp profileFile1 profileFile2 profileFile3 ..."
+	echo ""
+	echo "Profile file organisation example:"
+	echo "  version = 2"	
+	echo "  settings = -a --delete --progress"
+	echo "  source = user@ipAddress:~/dev/site"
+	echo "  destination = /home/user/dev "
+	echo ""
+	echo "Doc & source: https://github.com/JC-onLine/rsyncp"
+else
+	for profile in "$@"; do
+		if [[ -f $profile ]]; then
+			# uncomment for debug:
+			#echo "-> $profile is a file"
+			go_to_sync $profile
+		else
+			echo "/!\ $profile is a NOT file: Skip it!"
+		fi  
+	done
+fi
+echo ""
+
