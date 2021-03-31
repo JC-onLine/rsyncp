@@ -21,6 +21,7 @@
 #		- Line 3: Source sync (folder or file, ssh or not)
 #		- Line 4: Destination sync (folder, ssh or not)
 # 2021-03-20:	Version 2 Profile file settings modifications: no matter line number.
+# 2021-03-30:	Add source/destination existe test
 #
 #
 # Coded by:	JC_onLine
@@ -28,6 +29,8 @@
 
 # global definition
 app_version="2"
+SRC_ERR=101
+DST_ERR=102
 
 # Sync defintion function:
 function go_to_sync() {
@@ -45,6 +48,18 @@ function go_to_sync() {
 		echo "    Source      :  $rsync_source"
 		echo "    Destination :  $rsync_destination"
 	  	echo ""	
+		
+		# directory access control
+		if [[ ! -d $rsync_source ]]; then
+			echo "rsyncp: /!\ Source directory acess error."
+			echo "rsyncp: return code: $SRC_ERR"
+			return $SRC_ERR
+		fi
+		if [[ ! -d $rsync_destination ]]; then
+			echo "rsyncp: /!\ Destination directory acess error."
+			echo "rsyncp: return code: $DST_ERR"
+			return $DST_ERR
+		fi
 		cd ~
 		#settings example:
 		#rsync -a --delete --progress $rsync_source $rsync_destination
@@ -80,7 +95,7 @@ else
 			#echo "-> $profile is a file"
 			go_to_sync $profile
 		else
-			echo "/!\ $profile is a NOT file: Skip it!"
+			echo "rsyncp: /!\ Profile '$profile' file access error: Skip it!"
 		fi  
 	done
 fi
