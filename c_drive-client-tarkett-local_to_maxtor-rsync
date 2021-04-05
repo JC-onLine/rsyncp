@@ -1,5 +1,0 @@
-version = 2
-settings = -a --delete --progress --exclude=*Thumbs*
-source = /media/jc/C_DRIVE/00_CLIENTS/TARKETT/Appli locales JC
-destination = /media/jc/Maxtor/rsync/TARKETT/
-
