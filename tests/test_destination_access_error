@@ -1,0 +1,5 @@
+version = 2
+settings = -a --delete --progress --exclude=*Thumbs*
+source = /media/jc/D_DRIVE/00_CLIENTS
+destination = /media/jc/MaxtorZ/
+
