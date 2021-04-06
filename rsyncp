@@ -25,6 +25,7 @@
 #		Display error message & return error code (101/1.02).
 # 2021-04-05:	Exclude ssh source/destination from access test.
 # 		Special thanks to my friends Thierry and Nekrofage.
+# 2022-04-06:	Remove debug trace.
 #
 # Coded by:	JC_onLine
 #######################################################################################
@@ -63,8 +64,6 @@ function go_to_sync() {
 		fi
 		# ssh destination ?
 		if [[ $rsync_destination != *"@"* ]]; then
-    			echo "NOT ssh";
-		
 			if [[ ! -d $rsync_destination ]]; then
     				echo "rsyncp: /!\ Destination directory acess error."
 				echo "rsyncp: return code: $DST_ERR"
