@@ -1,0 +1,5 @@
+version = 2
+settings = -a --progress --exclude=*Thumbs*
+source = /media/jc/D_DRIVE/00_CLIENTS/SCHULMAN_PLASTICS
+destination = /media/jc/Maxtor/00_CLIENTS
+

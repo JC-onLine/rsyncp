@@ -1,0 +1,5 @@
+version = 2
+settings = -a --delete --progress --exclude=*Thumbs*
+source = /media/jc/C_DRIVE/10_Icones-Charte-graphiques
+destination = /media/jc/Maxtor/
+
